@@ -31,7 +31,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/book_service?useTimeZone=true&useSSL=false&serverTimezone=UTC
     username: root
-    password: admin123
+    password: admin
   jackson:
     serialization:
       fail-on-empty-beans: false
@@ -45,7 +45,11 @@ spring:
     url: jdbc:mysql://localhost:3306/
     schemas: book_service
     user: root
-    password: admin123
+    password: admin
+management:
+  tracing:
+    sampling:
+      probability: 1.0
 springdoc:
   show-actuator: true
   api-docs:

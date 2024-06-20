@@ -5,6 +5,8 @@ import java.math.RoundingMode;
 
 import org.example.cambioservice.model.Cambio;
 import org.example.cambioservice.repository.CambioRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("cambio-service")
 public class CambioController {
 
+  private Logger logger = LoggerFactory.getLogger(CambioController.class);
+
   @Autowired
   private Environment environment;
 
@@ -30,9 +34,11 @@ public class CambioController {
   @GetMapping(value = "/{amount}/{from}/{to}")
   public Cambio getCambio(@PathVariable(value = "amount") BigDecimal amount, @PathVariable("from") String from,
       @PathVariable("to") String to) {
+    logger.info("getCambios is called with => {}, {} and {} ", amount, "", from, "", to);
     Cambio cambio = repository.findByFromAndTo(from, to);
-    if (cambio == null)
+    if (cambio == null) {
       throw new RuntimeException("Currency Unsupported");
+    }
 
     String port = environment.getProperty("local.server.port");
     BigDecimal conversionFactor = cambio.getConversionFactor();
